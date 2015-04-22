@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="edu.ncsu.huddleup.MainActivity">
+
+    <ImageView
+        android:id="@+id/huddleUpIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/huddleup"
+        android:layout_weight="1"
+        />
+
+    <Button
+        android:id="@+id/invite"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Invite"
+        android:onClick="openInvite"
+     />
+
+    <Button
+        android:id="@+id/locate"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Locate"
+        android:onClick="openContacts"/>
+
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Settings"
+        android:onClick="openSettings"
+        />
+
+</LinearLayout>

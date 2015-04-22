@@ -3,13 +3,36 @@ package edu.ncsu.huddleup;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.util.Log;
+import android.view.View;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class HuddleUpMap extends FragmentActivity {
+public class HuddleUpMap extends FragmentActivity implements LocationListener  {
 
+    private SearchView search;
+    private RelativeLayout rel_layout;
+    Location myLocation = null;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     @Override
@@ -17,6 +40,12 @@ public class HuddleUpMap extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huddle_up_map);
         setUpMapIfNeeded();
+
+        search = new SearchView(HuddleUpMap.this);
+        rel_layout = (RelativeLayout) findViewById(R.id.rl);
+
+        rel_layout.addView(search);
+
     }
 
     @Override
@@ -60,6 +89,51 @@ public class HuddleUpMap extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
+        centerMapToCurrentLocation();
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
+
+    private void centerMapToCurrentLocation() {
+        //Zoom to current Location
+        mMap.setMyLocationEnabled(true);
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        myLocation = locationManager.getLastKnownLocation(bestProvider);
+        if (myLocation != null) {
+            onLocationChanged(myLocation);
+            locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
+            double latitude = myLocation.getLatitude();
+            double longitude = myLocation.getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+            mMap.addMarker(new MarkerOptions().position(latLng));
+            zoomToNewLocation(latLng);
+        }
+    }
+
+    private void zoomToNewLocation(LatLng loc) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
 }
