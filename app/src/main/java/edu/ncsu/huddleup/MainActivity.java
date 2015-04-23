@@ -1,5 +1,6 @@
 package edu.ncsu.huddleup;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -39,10 +40,26 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /** Called when the user clicks the Send button */
+    /** Called when the user clicks the Invite button */
+    public void openInvite(View view) {
+        // Do something in response to button
+        //Intent intent = new Intent(this, DisplayMessageActivity.class);
+        //startActivity(intent);
+    }
+
+    /** Called when the user clicks the Locate button */
     public void openContacts(View view) {
         // Do something in response to button
         //Intent intent = new Intent(this, DisplayMessageActivity.class);
         //startActivity(intent);
     }
+
+    /** Called when the user clicks the Settings button */
+    public void openSettings(View view) {
+        //Do something in response to button
+        Intent intent;
+        intent = new Intent(this, HuddleUpMap.class);
+        startActivity(intent);
+    }
+
 }
